@@ -1,17 +1,27 @@
+<div>
+  <%= flash[:notice] %>
+</div>
 
 <h1>Books</h1>
 
 <table>
   <thead>
       <th>Title</th>
-  <th>Body</th>
+      <th>Body</th>
+      <th></th>
   </thead>
 
+
 <tbody>
-<% @books.each do |list| %>
+<% @books.each do |book| %>
 <tr>
-  <td>%= list.title %></td>
-  <td><%= list.body %></td>
+  <td><%= book.title %></td>
+  <td><%= book.body %></td>
+  <td>
+    <%= link_to "Show", book_path(book.id) %>
+    <%= link_to "Edit", edit_book_path(book.id) %>
+    <%= link_to "Destroy", book_path(book.id), method: :delete, "data-confirm" => "Are you sure" %>
+  </td>
 </tr>
 <% end %>
 </tbody>
@@ -19,6 +29,15 @@
 
 
 <h1>New book</h1>
+
+<% if @book.errors.any? %>
+  <%= @book.errors.count %>errors prohibited this book from being saved
+  <ul>
+    <% @book.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+  </ul>
+<% end %>
 
 <%= form_with model: @book, url: '/books', method: :post do |f| %>
 
